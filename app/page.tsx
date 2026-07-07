@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { motion, useInView, useScroll, useTransform } from "framer-motion"
 import Image from "next/image"
 import { NavAvant } from "@/components/nav-avant"
@@ -607,6 +608,12 @@ function Divider() {
 // ─── MAIN ────────────────────────────────────────────────────────────────────
 export default function Page() {
   const [pickerOpen, setPickerOpen] = useState(false)
+  const router = useRouter()
+
+  // Prefetch /signup as soon as the homepage mounts so navigation is instant
+  useEffect(() => {
+    router.prefetch("/signup")
+  }, [router])
 
   return (
     <main className="min-h-screen bg-[#0a0a0c] text-white overflow-x-hidden relative" style={{ zIndex: 1 }}>
