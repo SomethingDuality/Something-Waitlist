@@ -1,28 +1,21 @@
 import { NextResponse } from "next/server"
+import { sendWaitlistEmail } from "@/lib/mailer"
 
 // Simple in-memory rate limiting cache
-// Key: IP address, Value: Array of timestamps of recent requests
 const ipCache = new Map<string, number[]>()
 const RATE_LIMIT_WINDOW_MS = 60 * 1000 // 1 minute window
-const MAX_REQUESTS_PER_WINDOW = 5 // Maximum 5 requests per minute per IP
+const MAX_REQUESTS_PER_WINDOW = 5
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now()
   const timestamps = ipCache.get(ip) || []
-  
-  // Filter out timestamps older than the window
   const activeTimestamps = timestamps.filter(ts => now - ts < RATE_LIMIT_WINDOW_MS)
-  
-  if (activeTimestamps.length >= MAX_REQUESTS_PER_WINDOW) {
-    return true
-  }
-  
+  if (activeTimestamps.length >= MAX_REQUESTS_PER_WINDOW) return true
   activeTimestamps.push(now)
   ipCache.set(ip, activeTimestamps)
   return false
 }
 
-// Script and HTML tag sanitization helper to prevent XSS or spreadsheet injection
 function sanitize(input: string): string {
   if (typeof input !== "string") return ""
   return input
@@ -37,28 +30,25 @@ function sanitize(input: string): string {
 
 export async function POST(request: Request) {
   try {
-    // 1. Content-Length Limit (Max 10 KB to prevent large payload Denial of Service)
+    // 1. Content-Length limit
     const contentLength = Number(request.headers.get("content-length") || "0")
     if (contentLength > 10 * 1024) {
       return NextResponse.json({ error: "Payload too large" }, { status: 413 })
     }
 
-    // 2. CSRF / Origin Verification
+    // 2. CSRF / Origin check
     const host = request.headers.get("host")
     const origin = request.headers.get("origin")
     const referer = request.headers.get("referer")
-    
-    // Verify the origin or referer matches our host in production
     if (process.env.NODE_ENV === "production") {
       const allowedHost = host || ""
       const requestOrigin = origin || referer || ""
-      
       if (requestOrigin && !requestOrigin.includes(allowedHost)) {
         return NextResponse.json({ error: "Unauthorized request origin" }, { status: 403 })
       }
     }
 
-    // 3. Rate Limiting Check
+    // 3. Rate limiting
     const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown"
     if (ip !== "unknown" && isRateLimited(ip)) {
       return NextResponse.json(
@@ -70,41 +60,35 @@ export async function POST(request: Request) {
     const body = await request.json()
     const { email, name, role, plan, linkedin, github, expertise, interests } = body
 
-    // 4. Server-side Input Validation
+    // 4. Validation
     if (!email || typeof email !== "string") {
       return NextResponse.json({ error: "Email is required" }, { status: 400 })
     }
-
-    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
-    if (!emailValid) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       return NextResponse.json({ error: "Invalid email address" }, { status: 400 })
     }
-
     if (name && (typeof name !== "string" || name.length > 100)) {
       return NextResponse.json({ error: "Invalid name format or length" }, { status: 400 })
     }
-
     if (role !== "founder" && role !== "investor") {
       return NextResponse.json({ error: "Invalid role selection" }, { status: 400 })
     }
 
-    // 5. Sanitization of input fields
+    // 5. Sanitize
     const sanitizedEmail = email.toLowerCase().trim()
     const sanitizedName = name ? sanitize(name) : "Anonymous"
     const sanitizedRole = role
     const sanitizedPlan = plan ? sanitize(plan) : (role === "founder" ? "something" : "nothing")
     const sanitizedLinkedin = linkedin ? sanitize(linkedin) : undefined
     const sanitizedGithub = github ? sanitize(github) : undefined
-    
     const sanitizedExpertise = Array.isArray(expertise)
-      ? expertise.map(x => sanitize(x)).filter(Boolean)
+      ? expertise.map((x: string) => sanitize(x)).filter(Boolean)
       : undefined
-      
     const sanitizedInterests = Array.isArray(interests)
-      ? interests.map(x => sanitize(x)).filter(Boolean)
+      ? interests.map((x: string) => sanitize(x)).filter(Boolean)
       : undefined
 
-    // 6. Build secure payload (ignoring any extra attributes injected by client)
+    // 6. Secure payload
     const securePayload = {
       email: sanitizedEmail,
       name: sanitizedName,
@@ -114,49 +98,37 @@ export async function POST(request: Request) {
       github: sanitizedGithub,
       expertise: sanitizedExpertise,
       interests: sanitizedInterests,
-      submittedAt: new Date().toISOString()
+      submittedAt: new Date().toISOString(),
     }
 
-    // Retrieve the form endpoint URL (Google Sheets Web App)
+    // ── Fire confirmation email immediately — before any external calls ──────
+    // This runs regardless of whether FORM_ENDPOINT succeeds or fails.
+    sendWaitlistEmail(sanitizedEmail, sanitizedName, sanitizedRole).catch((err) => {
+      console.error("[mailer] Failed to send waitlist email:", err)
+    })
+
     const formEndpoint = process.env.FORM_ENDPOINT
 
     if (!formEndpoint) {
-      // In development or if not configured, return a mock success
       return NextResponse.json({
         success: true,
-        message: "FORM_ENDPOINT environment variable not configured. Mocking signup success.",
-        token: "mock-token-" + Math.random().toString(36).slice(2)
+        message: "FORM_ENDPOINT not configured. Mocking signup success.",
+        token: "mock-token-" + Math.random().toString(36).slice(2),
       })
     }
 
-    // Forward to Google Sheets Web App
-    const response = await fetch(formEndpoint, {
+    // Forward to Google Sheets — fire-and-forget, don't await
+    fetch(formEndpoint, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
       body: JSON.stringify(securePayload),
+    }).catch((err) => {
+      console.error("[sheets] Failed to submit to form endpoint:", err)
     })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      return NextResponse.json(
-        { error: `Form submission failed: ${errorText}` },
-        { status: response.status }
-      )
-    }
-
-    // Parse response if JSON, otherwise return generic success
-    const contentType = response.headers.get("content-type")
-    const responseData = contentType && contentType.includes("application/json")
-      ? await response.json()
-      : { message: "Submission accepted" }
 
     return NextResponse.json({
       success: true,
       token: "waitlist-token-" + Math.random().toString(36).slice(2),
-      data: responseData
     })
   } catch (error: any) {
     return NextResponse.json(
