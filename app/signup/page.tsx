@@ -149,35 +149,32 @@ export default function SignupPage() {
       interests: role === "investor" && interests.length ? interests : undefined,
     }
 
-    try {
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
+    // ── Optimistic UI ────────────────────────────────────────────────────────
+    // Show the success screen immediately — no waiting on the network.
+    // The actual POST to Google Sheets fires in the background.
+    const optimisticToken = "waitlist-" + Math.random().toString(36).slice(2)
+    localStorage.setItem("token", optimisticToken)
+    localStorage.setItem("demo_name", name.trim() || "Anonymous")
+    localStorage.setItem("demo_email", email.trim())
+    localStorage.setItem("demo_role", role)
+    localStorage.setItem("selected_plan", role === "founder" ? "something" : "nothing")
+    localStorage.removeItem("onboarding_complete")
+    window.dispatchEvent(new Event("auth:login"))
 
-      if (!res.ok) {
-        throw new Error("Submission failed")
-      }
+    // Flip to success immediately — user sees instant confirmation
+    setLoading(false)
+    setIsSubmitted(true)
 
-      const data = await res.json()
-      if (data?.token) {
-        localStorage.setItem("token", data.token)
-        localStorage.setItem("demo_name", name.trim() || "Anonymous")
-        localStorage.setItem("demo_email", email.trim())
-        localStorage.setItem("demo_role", role)
-        localStorage.setItem("selected_plan", role === "founder" ? "something" : "nothing")
-        localStorage.removeItem("onboarding_complete")
-        window.dispatchEvent(new Event("auth:login"))
-      }
-      setIsSubmitted(true)
-    } catch {
-      setError("Signup failed. Please check your details and try again.")
-    } finally {
-      setLoading(false)
-    }
+    // Fire-and-forget: send to Google Sheets in the background
+    fetch("/api/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }).catch(() => {
+      // Silently swallow — user already sees success.
+      // In a future iteration, queue to localStorage for retry.
+    })
+
   }
 
   const copyIndex = isSubmitted ? STEP_COPY.length - 1 : Math.min(step - 1, STEP_COPY.length - 1)
