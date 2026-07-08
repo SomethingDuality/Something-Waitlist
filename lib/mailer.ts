@@ -38,7 +38,7 @@ function buildWaitlistEmail(name: string, role: string): string {
                 or   src="https://yourdomain.com/thing-logo-white.png"
               -->
               <img
-                src="https://something.to/Something.jpeg"
+                src="https://something-waitlist.vercel.app/Something.jpeg"
                 alt="Something"
                 width="560"
                 style="display:block;border:0;max-width:100%;border-radius:8px;"
@@ -77,7 +77,7 @@ function buildWaitlistEmail(name: string, role: string): string {
                 <tr>
                   <td align="center" style="border-radius:10px;background-color:${accentColor};">
                     <a
-                      href="https://something.to"
+                      href="https://something-waitlist.vercel.app"
                       style="display:inline-block;padding:12px 28px;font-size:14px;font-weight:600;color:#0a0a0c;text-decoration:none;border-radius:10px;"
                     >
                       Visit Something →
@@ -93,7 +93,7 @@ function buildWaitlistEmail(name: string, role: string): string {
           <tr>
             <td align="center" style="padding-top:28px;">
               <p style="margin:0 0 6px;font-size:11px;color:rgba(255,255,255,0.2);font-family:monospace;">
-                something.to · v2.0
+                something-waitlist.vercel.app · v2.0
               </p>
               <p style="margin:0;font-size:11px;color:rgba(255,255,255,0.12);">
                 You received this because you signed up for the Something waitlist.
