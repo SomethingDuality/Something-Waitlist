@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+import { NextResponse, after } from "next/server"
 import { sendWaitlistEmail } from "@/lib/mailer"
 
 // Simple in-memory rate limiting cache
@@ -101,34 +101,34 @@ export async function POST(request: Request) {
       submittedAt: new Date().toISOString(),
     }
 
-    // ── Fire confirmation email immediately — before any external calls ──────
-    // This runs regardless of whether FORM_ENDPOINT succeeds or fails.
-    sendWaitlistEmail(sanitizedEmail, sanitizedName, sanitizedRole).catch((err) => {
-      console.error("[mailer] Failed to send waitlist email:", err)
-    })
-
     const formEndpoint = process.env.FORM_ENDPOINT
 
-    if (!formEndpoint) {
-      return NextResponse.json({
-        success: true,
-        message: "FORM_ENDPOINT not configured. Mocking signup success.",
-        token: "mock-token-" + Math.random().toString(36).slice(2),
+    // ── Run confirmation email and Sheets submission after response ──────
+    after(async () => {
+      const emailPromise = sendWaitlistEmail(sanitizedEmail, sanitizedName, sanitizedRole).catch((err) => {
+        console.error("[mailer] Failed to send waitlist email:", err)
       })
-    }
 
-    // Forward to Google Sheets — fire-and-forget, don't await
-    fetch(formEndpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify(securePayload),
-    }).catch((err) => {
-      console.error("[sheets] Failed to submit to form endpoint:", err)
+      let sheetsPromise = Promise.resolve()
+      if (!formEndpoint) {
+        console.warn("FORM_ENDPOINT not configured. Skipping Google Sheets submission.")
+      } else {
+        sheetsPromise = fetch(formEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(securePayload),
+        }).then(() => {}).catch((err) => {
+          console.error("[sheets] Failed to submit to form endpoint:", err)
+        })
+      }
+
+      await Promise.all([emailPromise, sheetsPromise])
     })
 
     return NextResponse.json({
       success: true,
       token: "waitlist-token-" + Math.random().toString(36).slice(2),
+      message: !formEndpoint ? "FORM_ENDPOINT not configured. Mocking signup success." : undefined,
     })
   } catch (error: any) {
     return NextResponse.json(
