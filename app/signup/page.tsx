@@ -1,12 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { SomethingLogo } from "@/components/something-logo"
 import { cn } from "@/lib/utils"
 import {
@@ -52,8 +50,6 @@ const STEP_COPY = [
 // ── Main Component ─────────────────────────────────────────────────────────────
 
 export default function SignupPage() {
-  const router = useRouter()
-
   // Step state: 1=Role, 2=Details
   const [step, setStep] = useState(1)
 
@@ -113,17 +109,41 @@ export default function SignupPage() {
 
   const addCustomExpertise = () => {
     const v = newExpertise.trim()
-    if (v && !expertise.map((x) => x.toLowerCase()).includes(v.toLowerCase())) {
-      setExpertise((p) => [...p, v])
+    if (!v) {
+      setNewExpertise("")
+      return
     }
+
+    const alreadySelected = expertise.some(x => x.toLowerCase() === v.toLowerCase())
+    if (alreadySelected) {
+      setNewExpertise("")
+      return
+    }
+
+    const predefined = FOUNDER_EXPERTISE_OPTS.find(x => x.toLowerCase() === v.toLowerCase())
+    const valueToAdd = predefined || v
+
+    setExpertise((p) => [...p, valueToAdd])
     setNewExpertise("")
   }
 
   const addCustomInterest = () => {
     const v = newInterest.trim()
-    if (v && !interests.map((x) => x.toLowerCase()).includes(v.toLowerCase())) {
-      setInterests((p) => [...p, v])
+    if (!v) {
+      setNewInterest("")
+      return
     }
+
+    const alreadySelected = interests.some(x => x.toLowerCase() === v.toLowerCase())
+    if (alreadySelected) {
+      setNewInterest("")
+      return
+    }
+
+    const predefined = INVESTOR_INTEREST_OPTS.find(x => x.toLowerCase() === v.toLowerCase())
+    const valueToAdd = predefined || v
+
+    setInterests((p) => [...p, valueToAdd])
     setNewInterest("")
   }
 
@@ -510,7 +530,7 @@ export default function SignupPage() {
                                <Award className="h-3.5 w-3.5" /> Core Expertise <span className="text-white/15">(optional)</span>
                               </label>
                               <div className="flex flex-wrap gap-1.5">
-                                {FOUNDER_EXPERTISE_OPTS.map((opt) => {
+                                {Array.from(new Set([...FOUNDER_EXPERTISE_OPTS, ...expertise])).map((opt) => {
                                   const active = expertise.includes(opt)
                                   return (
                                     <button
@@ -553,7 +573,7 @@ export default function SignupPage() {
                                 <Compass className="h-3.5 w-3.5" /> Investment Interests <span className="text-white/15">(optional)</span>
                               </label>
                               <div className="flex flex-wrap gap-1.5">
-                                {INVESTOR_INTEREST_OPTS.map((opt) => {
+                                {Array.from(new Set([...INVESTOR_INTEREST_OPTS, ...interests])).map((opt) => {
                                   const active = interests.includes(opt)
                                   return (
                                     <button
