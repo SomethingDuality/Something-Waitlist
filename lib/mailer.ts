@@ -38,9 +38,9 @@ function buildWaitlistEmail(name: string, role: string): string {
                 or   src="https://yourdomain.com/thing-logo-white.png"
               -->
               <img
-                src="https://something-waitlist.vercel.app/Something.jpeg"
+                src="https://something-waitlist.vercel.app/thing-logo-white.png"
                 alt="Something"
-                width="560"
+                width="240"
                 style="display:block;border:0;max-width:100%;border-radius:8px;"
               />
             </td>
