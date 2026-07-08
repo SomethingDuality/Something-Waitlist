@@ -1,5 +1,5 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { GeistSans } from "geist/font/sans"
 import "./globals.css"
 import { AuthProvider } from "@/components/auth-provider"
@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "Something",
   description:
     "Ideas find their people. Capital finds its purpose. Two AI minds — Nothing and Something — co-pilot your idea into reality.",
+}
+
+export const viewport: Viewport = {
   themeColor: "#0A0A0C",
 }
 
