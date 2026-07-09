@@ -8,6 +8,7 @@ import { NavAvant } from "@/components/nav-avant"
 import { LandingBg } from "@/components/landing-bg"
 import { ActionPicker } from "@/components/action-picker"
 import { cn } from "@/lib/utils"
+import { Users, Coins, Lightbulb } from "lucide-react"
 
 // ─── HERO — centered, editorial, typographic ─────────────────────────────────
 // No left/right split. No orbs. The headline IS the visual.
@@ -17,14 +18,14 @@ function HeroSection({ onCTA }: { onCTA: () => void }) {
   const heroY = useTransform(scrollY, [0, 600], [0, -80])
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-6">
+    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-24">
       <motion.div
-        className="text-center max-w-4xl mx-auto"
+        className="text-center max-w-4xl mx-auto flex flex-col items-center"
         style={{ opacity: heroOpacity, y: heroY }}
       >
         {/* Tiny floating mascot above headline */}
         <motion.div
-          className="mb-10 flex justify-center"
+          className="mb-6 flex justify-center"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{
             opacity: 1,
@@ -71,16 +72,14 @@ function HeroSection({ onCTA }: { onCTA: () => void }) {
           <span className="text-white/15">.</span>
         </motion.h2>
 
-        {/* Sub copy — understated */}
+        {/* Sub copy — clear value proposition */}
         <motion.p
-          className="mt-10 text-white/25 text-sm sm:text-base leading-relaxed max-w-md mx-auto"
+          className="mt-10 text-white/30 text-sm sm:text-base leading-relaxed max-w-xl mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.7 }}
         >
-          Two AI minds sit at the center.{" "}
-          <span className="text-[#E3C27A]/60">Nothing</span> tears your idea apart.{" "}
-          <span className="text-[#34D399]/60">Something</span> finds why people will stay.
+          Most ideas die quietly — in someone&apos;s head, without a team, or in a cold inbox. Something won&apos;t let yours. Two AI agents argue over it first. One tries to kill it. If it survives, the <span className="text-[#E3C27A] font-semibold">right people</span> find you.
         </motion.p>
 
         {/* CTA */}
@@ -92,7 +91,7 @@ function HeroSection({ onCTA }: { onCTA: () => void }) {
         >
           <motion.button
             onClick={onCTA}
-            className="rounded-full px-10 py-4 text-sm font-semibold text-[#0a0a0c] bg-white"
+            className="rounded-full px-10 py-4 text-sm font-semibold text-[#0a0a0c] bg-white cursor-pointer"
             whileHover={{
               backgroundColor: "#E3C27A",
               boxShadow: "0 0 60px rgba(227,194,122,0.3)",
@@ -103,8 +102,8 @@ function HeroSection({ onCTA }: { onCTA: () => void }) {
           >
             Get started →
           </motion.button>
-          <span className="text-[11px] text-white/10 tracking-wide">
-            mutual NDAs · on-chain idea hashes · zero lock-in
+          <span className="text-[11px] text-white/35 tracking-wide">
+            private by default · verified proof-of-work · zero lock-in
           </span>
         </motion.div>
       </motion.div>
@@ -140,15 +139,15 @@ function DualSection() {
       accent: "#E3C27A",
       question: "What breaks this idea?",
       desc: "When someone hears your idea and their face goes blank — that's Nothing. The hard questions. The investor lens. The daylight test that kills what shouldn't survive.",
-      traits: ["Revenue stress-test", "Moat analysis", "Risk falsification", "Timing critique"],
+      traits: ["Business model flaws", "Competition risks", "Timing issues", "Worst-case scenarios"],
     },
     {
       id: "something" as const,
       name: "Something",
       accent: "#34D399",
       question: "What makes people stay?",
-      desc: "When someone hears your idea and leans in — that's Something. The supporter who maps emotion to retention, and conviction to community.",
-      traits: ["Journey mapping", "Emotional resonance", "Culture fit", "Trust strategy"],
+      desc: "When someone hears your idea and leans in — that's Something. The supporter who finds why users care, why they stay, and how you build a real community.",
+      traits: ["User delight", "Core value loop", "Community fit", "Viral loops"],
     },
   ]
 
@@ -277,11 +276,11 @@ function HowSection() {
   const inView = useInView(ref, { once: true, margin: "-80px" })
 
   const flow = [
-    { step: "01", label: "Share your idea", detail: "Protected by mutual NDA and on-chain hashing. Your IP is safe before the conversation starts.", accent: "#E3C27A" },
-    { step: "02", label: "Nothing tears it apart", detail: "Revenue model, moat, timing — the critical investor mind finds what breaks before the market does.", accent: "#E3C27A" },
-    { step: "03", label: "Something finds the heart", detail: "Who hurts without this? What makes them tell a friend? The builder maps emotion to retention.", accent: "#34D399" },
-    { step: "04", label: "Find your people", detail: "Co-founders, engineers, investors — matched by shared conviction, not just keywords.", accent: "#F472B6" },
-    { step: "05", label: "Fund transparently", detail: "Community-backed escrow. Milestone-locked releases. Every dollar visible. Every receipt public.", accent: "#34D399" },
+    { step: "01", label: "Share your idea", detail: "Protected by mutual NDAs and private access logs. Your IP remains yours, fully documented from day one.", accent: "#E3C27A" },
+    { step: "02", label: "Nothing tears it apart", detail: "The AI acts like a skeptical investor, pointing out exactly where your business model, timing, or market entry will fail.", accent: "#E3C27A" },
+    { step: "03", label: "Something finds the heart", detail: "The AI helps find the core value — who needs this most, why they will love it, and why they won't leave.", accent: "#34D399" },
+    { step: "04", label: "Find your people", detail: "Get matched with co-founders, builders, and investors who actually care about the problem you're solving.", accent: "#F472B6" },
+    { step: "05", label: "Fund transparently", detail: "Safe milestone payments. Funds are locked and only released when the team finishes and verifies each step of the project.", accent: "#34D399" },
   ]
 
   return (
@@ -374,9 +373,9 @@ function FundingSection() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
 
   const milestones = [
-    { name: "Engineering M1", amount: 8000, pct: 37, status: "Released", color: "#34D399", txHash: "0x7a...d24" },
-    { name: "Design sprints", amount: 2200, pct: 10, status: "Released", color: "#E3C27A", txHash: "0x8e...f12" },
-    { name: "Cloud credits", amount: 900, pct: 4, status: "Released", color: "#F472B6", txHash: "0x3b...a58" },
+    { name: "Engineering M1", amount: 8000, pct: 37, status: "Released", color: "#34D399", receiptId: "rec-7a24" },
+    { name: "Design sprints", amount: 2200, pct: 10, status: "Released", color: "#E3C27A", receiptId: "rec-8ef1" },
+    { name: "Cloud credits", amount: 900, pct: 4, status: "Released", color: "#F472B6", receiptId: "rec-3b58" },
     { name: "Engineering M2", amount: 10000, pct: 46, status: "In progress", color: "#818CF8", details: "Voting ends in 2 days" },
     { name: "Ops & admin", amount: 700, pct: 3, status: "Pending", color: "rgba(255,255,255,0.2)", details: "Locked until milestone 3" },
   ]
@@ -396,7 +395,7 @@ function FundingSection() {
           every dollar visible<span className="text-white/15">.</span>
         </h2>
         <p className="mt-4 text-white/25 text-sm max-w-md mx-auto leading-relaxed">
-          Community-backed escrow. Milestone-locked releases. Public receipts. No black boxes.
+          Milestone-locked payments. Clear tracking. No hidden fees or black boxes.
         </p>
       </motion.div>
 
@@ -412,9 +411,9 @@ function FundingSection() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span className="font-medium text-white/50">Multi-sig contract</span>
+          <span className="font-medium text-white/50">Secure Escrow Account</span>
           <span className="text-white/15">·</span>
-          <span className="font-mono text-white/30">something.eth</span>
+          <span className="font-mono text-white/30">waitlist-vault-01</span>
         </div>
         <div className="flex items-center gap-1.5 font-mono text-white/50">
           <span>Escrow:</span>
@@ -504,9 +503,9 @@ function FundingSection() {
                   <span className="text-sm font-medium transition-colors" style={{ color: isHovered ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.4)" }}>
                     {m.name}
                   </span>
-                  {m.txHash && (
+                  {m.receiptId && (
                     <span className="text-[11px] font-mono text-white/15 hover:text-white/30 transition-colors">
-                      {m.txHash}
+                      {m.receiptId}
                     </span>
                   )}
                   {isHovered && m.details && (
@@ -552,7 +551,7 @@ function FundingSection() {
         transition={{ delay: 0.9 }}
         className="mt-10 text-center text-[11px] text-white/10 tracking-widest uppercase font-mono"
       >
-        multi-sig escrow · milestone verification · public receipts
+        secure escrow account · milestone verification · clear receipts
       </motion.p>
     </section>
   )
@@ -616,7 +615,7 @@ export default function Page() {
   }, [router])
 
   return (
-    <main className="min-h-screen bg-[#0a0a0c] text-white overflow-x-hidden relative" style={{ zIndex: 1 }}>
+    <main className="min-h-screen bg-[#0a0a0c] text-white relative" style={{ zIndex: 1 }}>
       <LandingBg />
       <NavAvant />
 

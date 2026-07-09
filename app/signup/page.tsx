@@ -35,13 +35,13 @@ const INVESTOR_INTEREST_OPTS = [
 const STEP_COPY = [
   {
     headline: "protect the idea.\nfind the conviction.",
-    sub: "Two AI minds at your side. Nothing stress-tests reality. Something finds why people will stay.",
+    sub: "Two AI agents argue over your idea first. One tries to kill it. If it survives, the right people find you.",
     accentWord: "conviction",
     accentColor: "#34D399",
   },
   {
     headline: "secure early access\nto the platform.",
-    sub: "NDAs are cryptographic defaults here. Your email and project details stay hashed until you consent.",
+    sub: "NDAs are the standard here. Your details stay private until you choose to share them.",
     accentWord: "access",
     accentColor: "#34D399",
   },
@@ -394,7 +394,7 @@ export default function SignupPage() {
                               <div>
                                 <h3 className="text-sm font-semibold tracking-tight text-white">Founder</h3>
                                 <p className="text-[11px] text-white/45 mt-1 leading-relaxed">
-                                  You have an idea, a team, or a problem worth solving. Get funded transparently through milestone-gated escrow.
+                                  You have an idea, a team, or a problem worth solving. Get funded as you finish work, one milestone at a time.
                                 </p>
                               </div>
                             </div>
@@ -422,7 +422,7 @@ export default function SignupPage() {
                               <div>
                                 <h3 className="text-sm font-semibold tracking-tight text-white">Investor</h3>
                                 <p className="text-[11px] text-white/45 mt-1 leading-relaxed">
-                                  You back early-conviction founders. Discover deals, run diligence with AI, and release funds by milestone.
+                                  You back early-stage founders. Discover deals, run diligence with AI, and release funds as milestones are completed.
                                 </p>
                               </div>
                             </div>

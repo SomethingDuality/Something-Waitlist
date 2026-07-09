@@ -48,7 +48,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body
-        className={`${GeistSans.className} min-h-screen bg-background text-foreground antialiased`}
+        className={`${GeistSans.className} min-h-screen bg-background text-foreground antialiased overflow-x-hidden`}
         style={{ fontFamily: "var(--font-inter, system-ui, sans-serif)" }}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
