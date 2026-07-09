@@ -74,7 +74,7 @@ function HeroSection({ onCTA }: { onCTA: () => void }) {
 
         {/* Sub copy — clear value proposition */}
         <motion.p
-          className="mt-10 text-white/30 text-sm sm:text-base leading-relaxed max-w-xl mx-auto"
+          className="mt-10 text-white/70 text-sm sm:text-base leading-relaxed max-w-xl mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.7 }}
@@ -102,7 +102,7 @@ function HeroSection({ onCTA }: { onCTA: () => void }) {
           >
             Get started →
           </motion.button>
-          <span className="text-[11px] text-white/35 tracking-wide">
+          <span className="text-[11px] text-white/60 tracking-wide">
             private by default · verified proof-of-work · zero lock-in
           </span>
         </motion.div>
@@ -213,14 +213,14 @@ function DualSection() {
 
                 <p
                   className="text-xl italic transition-colors duration-700 mb-6"
-                  style={{ color: isActive ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.12)" }}
+                  style={{ color: isActive ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.4)" }}
                 >
                   &ldquo;{s.question}&rdquo;
                 </p>
 
                 <p
                   className="text-sm leading-relaxed mb-10 transition-colors duration-700"
-                  style={{ color: isActive ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.15)" }}
+                  style={{ color: isActive ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.4)" }}
                 >
                   {s.desc}
                 </p>
@@ -342,12 +342,12 @@ function HowSection() {
               {/* Title & Description */}
               <div className="space-y-1">
                 <h3
-                  className="text-base sm:text-lg font-semibold tracking-tight text-white/40 group-hover:text-white/80 transition-colors duration-500"
+                  className="text-base sm:text-lg font-semibold tracking-tight text-white/60 group-hover:text-white/90 transition-colors duration-500"
                   style={{ fontFamily: "var(--font-outfit)" }}
                 >
                   {f.label}
                 </h3>
-                <p className="text-xs sm:text-sm text-white/15 group-hover:text-white/35 leading-relaxed transition-colors duration-500 max-w-xl">
+                <p className="text-xs sm:text-sm text-white/50 group-hover:text-white/75 leading-relaxed transition-colors duration-500 max-w-xl">
                   {f.detail}
                 </p>
               </div>
@@ -394,7 +394,7 @@ function FundingSection() {
         >
           every dollar visible<span className="text-white/15">.</span>
         </h2>
-        <p className="mt-4 text-white/25 text-sm max-w-md mx-auto leading-relaxed">
+        <p className="mt-4 text-white/60 text-sm max-w-md mx-auto leading-relaxed">
           Milestone-locked payments. Clear tracking. No hidden fees or black boxes.
         </p>
       </motion.div>
@@ -404,21 +404,21 @@ function FundingSection() {
         initial={{ opacity: 0, y: 10 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 0.15 }}
-        className="mx-auto max-w-md mb-10 flex items-center justify-between px-4 py-2.5 rounded-full border border-white/5 bg-white/[0.01] backdrop-blur-sm text-xs text-white/40"
+        className="mx-auto max-w-md mb-10 flex items-center justify-between px-4 py-2.5 rounded-full border border-white/5 bg-white/[0.01] backdrop-blur-sm text-xs text-white/60"
       >
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span className="font-medium text-white/50">Secure Escrow Account</span>
+          <span className="font-medium text-white/70">Secure Escrow Account</span>
           <span className="text-white/15">·</span>
-          <span className="font-mono text-white/30">waitlist-vault-01</span>
+          <span className="font-mono text-white/55">waitlist-vault-01</span>
         </div>
-        <div className="flex items-center gap-1.5 font-mono text-white/50">
+        <div className="flex items-center gap-1.5 font-mono text-white/70">
           <span>Escrow:</span>
           <span className="text-[#34D399] font-semibold">$10,700</span>
-          <span className="text-white/20">/</span>
+          <span className="text-white/30">/</span>
           <span>$21,800</span>
         </div>
       </motion.div>
@@ -462,7 +462,7 @@ function FundingSection() {
             )
           })}
         </div>
-        <div className="flex justify-between mt-3 text-[11px] text-white/20 font-mono">
+        <div className="flex justify-between mt-3 text-[11px] text-white/45 font-mono">
           <span>Escrow initialized ($0)</span>
           <span className="hidden sm:inline">Released: $11,100</span>
           <span>Target pool ($21,800)</span>
@@ -500,11 +500,11 @@ function FundingSection() {
                   }}
                 />
                 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-                  <span className="text-sm font-medium transition-colors" style={{ color: isHovered ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.4)" }}>
+                  <span className="text-sm font-medium transition-colors" style={{ color: isHovered ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.65)" }}>
                     {m.name}
                   </span>
                   {m.receiptId && (
-                    <span className="text-[11px] font-mono text-white/15 hover:text-white/30 transition-colors">
+                    <span className="text-[11px] font-mono text-white/40 hover:text-white/70 transition-colors">
                       {m.receiptId}
                     </span>
                   )}
@@ -512,7 +512,7 @@ function FundingSection() {
                     <motion.span
                       initial={{ opacity: 0, x: -5 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="text-[11px] text-white/20 font-mono"
+                      className="text-[11px] text-white/45 font-mono"
                     >
                       {m.details}
                     </motion.span>
@@ -525,7 +525,7 @@ function FundingSection() {
                     "text-[11px] font-mono tracking-wide uppercase px-2.5 py-0.5 rounded border transition-colors duration-300",
                     m.status === "Released" && "text-emerald-400/80 bg-emerald-500/5 border-emerald-500/10",
                     m.status === "In progress" && "text-indigo-400/80 bg-indigo-500/5 border-indigo-500/10",
-                    m.status === "Pending" && "text-white/20 bg-white/5 border-white/5"
+                    m.status === "Pending" && "text-white/45 bg-white/5 border-white/8"
                   )}
                 >
                   {m.status}
@@ -534,7 +534,7 @@ function FundingSection() {
                   className="text-sm font-semibold tabular-nums tracking-tight transition-colors duration-300"
                   style={{
                     fontFamily: "var(--font-outfit)",
-                    color: isHovered ? m.color : "rgba(255,255,255,0.35)"
+                    color: isHovered ? m.color : "rgba(255,255,255,0.65)"
                   }}
                 >
                   ${m.amount.toLocaleString()}
@@ -549,7 +549,7 @@ function FundingSection() {
         initial={{ opacity: 0 }}
         animate={inView ? { opacity: 1 } : {}}
         transition={{ delay: 0.9 }}
-        className="mt-10 text-center text-[11px] text-white/10 tracking-widest uppercase font-mono"
+        className="mt-10 text-center text-[11px] text-white/45 tracking-widest uppercase font-mono"
       >
         secure escrow account · milestone verification · clear receipts
       </motion.p>
@@ -568,25 +568,31 @@ function Footer() {
         <div className="flex flex-col sm:flex-row justify-between items-start gap-10">
           <div>
             <p className="font-semibold tracking-tight mb-2" style={{ fontFamily: "var(--font-outfit)" }}>Something</p>
-            <p className="text-white/15 text-xs">somewhere between conviction and doubt.</p>
+            <p className="text-white/45 text-xs">somewhere between conviction and doubt.</p>
           </div>
-          <div className="flex gap-12 text-[13px]">
+          <div className="flex flex-wrap gap-12 sm:gap-16 text-[13px]">
             <div className="space-y-2">
-              <p className="text-white/10 text-[11px] uppercase tracking-[0.2em] mb-3">Product</p>
-              <a href="#duo" className="block text-white/20 hover:text-white/50 transition-colors">Nothing & Something</a>
-              <a href="#how" className="block text-white/20 hover:text-white/50 transition-colors">How it works</a>
-              <a href="#funding" className="block text-white/20 hover:text-white/50 transition-colors">Funding</a>
+              <p className="text-white/40 text-[11px] uppercase tracking-[0.2em] mb-3">Product</p>
+              <a href="#duo" className="block text-white/50 hover:text-white/80 transition-colors">The Framework</a>
+              <a href="#how" className="block text-white/50 hover:text-white/80 transition-colors">How it works</a>
+              <a href="#funding" className="block text-white/50 hover:text-white/80 transition-colors">Funding</a>
             </div>
             <div className="space-y-2">
-              <p className="text-white/10 text-[11px] uppercase tracking-[0.2em] mb-3">Legal</p>
-              <a href="/terms" className="block text-white/20 hover:text-white/50 transition-colors">Terms</a>
-              <a href="/terms" className="block text-white/20 hover:text-white/50 transition-colors">Privacy</a>
+              <p className="text-white/40 text-[11px] uppercase tracking-[0.2em] mb-3">Legal</p>
+              <a href="/terms" className="block text-white/50 hover:text-white/80 transition-colors">Terms</a>
+              <a href="/terms" className="block text-white/50 hover:text-white/80 transition-colors">Privacy</a>
+            </div>
+            <div className="space-y-2">
+              <p className="text-white/40 text-[11px] uppercase tracking-[0.2em] mb-3">Contact</p>
+              <a href="mailto:somethingduality09@gmail.com" className="block text-white/50 hover:text-white/80 transition-colors font-mono text-[12px]">
+                somethingduality09@gmail.com
+              </a>
             </div>
           </div>
         </div>
         <div className="mt-14 pt-5 border-t border-white/[0.02] flex justify-between">
-          <p className="text-[11px] text-white/8">© {new Date().getFullYear()} Something.</p>
-          <p className="text-[11px] text-white/6 italic">ideas find their people.</p>
+          <p className="text-[11px] text-white/35">© {new Date().getFullYear()} Something.</p>
+          <p className="text-[11px] text-white/35 italic">ideas find their people.</p>
         </div>
       </div>
     </footer>
