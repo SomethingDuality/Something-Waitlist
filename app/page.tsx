@@ -262,7 +262,7 @@ function DualSection() {
       <div className="flex items-center justify-center py-14 gap-4">
         <span className="text-xs font-medium tracking-tight" style={{ color: "#E3C27A" }}>Nothing</span>
         <span className="h-px w-16 bg-gradient-to-r from-[#E3C27A]/30 via-[#F472B6]/20 to-[#34D399]/30" />
-        <span className="text-[11px] uppercase tracking-[0.2em] text-white/15 border border-white/6 rounded-full px-4 py-1">becomes</span>
+        <span className="text-[11px] uppercase tracking-[0.2em] text-white/45 border border-white/15 rounded-full px-4 py-1">becomes</span>
         <span className="h-px w-16 bg-gradient-to-r from-[#34D399]/30 via-[#F472B6]/20 to-[#E3C27A]/30" />
         <span className="text-xs font-medium tracking-tight" style={{ color: "#34D399" }}>Something</span>
       </div>
@@ -286,7 +286,7 @@ function HowSection() {
   return (
     <section ref={ref} className="py-28 sm:py-40" id="how">
       {/* Marquee ticker */}
-      <div className="overflow-hidden mb-20 opacity-[0.08]">
+      <div className="overflow-hidden mb-20 opacity-[0.2]">
         <motion.div
           className="flex whitespace-nowrap gap-12 text-6xl sm:text-7xl font-bold tracking-tighter"
           animate={{ x: ["0%", "-50%"] }}
@@ -318,7 +318,7 @@ function HowSection() {
           className="text-3xl sm:text-4xl font-bold tracking-tighter mb-16 text-center"
           style={{ fontFamily: "var(--font-outfit)" }}
         >
-          from hidden idea<span className="text-white/15"> to funded company</span>
+          from hidden idea<span className="text-white/45"> to funded company</span>
         </motion.h2>
 
         {/* Steps — minimal timeline */}
@@ -334,7 +334,7 @@ function HowSection() {
               {/* Number */}
               <span
                 className="text-xs font-mono pt-1 transition-colors duration-500"
-                style={{ color: "rgba(255,255,255,0.1)", fontFamily: "var(--font-outfit)" }}
+                style={{ color: "rgba(255,255,255,0.35)", fontFamily: "var(--font-outfit)" }}
               >
                 {f.step}
               </span>
