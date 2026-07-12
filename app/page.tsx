@@ -100,7 +100,7 @@ function HeroSection({ onCTA }: { onCTA: () => void }) {
             whileTap={{ scale: 0.96 }}
             style={{ boxShadow: "0 0 0 1px rgba(255,255,255,0.08) inset, 0 4px 20px rgba(0,0,0,0.4)" }}
           >
-            Get started →
+            Join the Waitlist →
           </motion.button>
           <span className="text-[11px] text-white/60 tracking-wide">
             private by default · verified proof-of-work · zero lock-in
